@@ -1,5 +1,5 @@
-# Learning Ruby development, such as rails, sinatra and so no: sample application
+# Learn ruby development, such as rails, sinatra and so no
 
-This is the sample application for
+These are the sample projects for
 [*Learning ruby development by examples*](http://www.guoyao.me/)
 by [guoyao](http://www.guoyao.me/).
