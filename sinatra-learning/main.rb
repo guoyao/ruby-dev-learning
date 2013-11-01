@@ -1,6 +1,8 @@
 require 'sinatra'
 require 'sass'
 require 'slim'
+require 'sinatra/flash'
+require 'pony'
 require 'sinatra/reloader' if development?
 require './app/models/song'
 
@@ -53,6 +55,17 @@ get '/about' do
   slim :about
 end
 
+get '/contact' do
+  halt(401, 'Not Authorized') unless session[:admin]
+  slim :contact
+end
+
+post '/contact' do
+  send_message
+  flash[:notice] = "Thank you for your message. We'll be in touch soon."
+  redirect to('/')
+end
+
 get '/songs' do
   find_songs
   slim :songs
@@ -71,7 +84,7 @@ end
 
 post '/songs' do
   halt(401, 'Not Authorized') unless session[:admin]
-  create_song
+  flash[:notice] = "Song successfully added" if create_song
   redirect to("/songs/#{@song.id}")
 end
 
@@ -84,13 +97,13 @@ end
 put '/songs/:id' do
   halt(401, 'Not Authorized') unless session[:admin]
   song = find_song
-  song.update(params[:song])
+  flash[:notice] = "Song successfully updated" if song.update(params[:song])
   redirect to("/songs/#{song.id}")
 end
 
 delete '/songs/:id' do
   halt(401, 'Not Authorized') unless session[:admin]
-  find_song.destroy
+  flash[:notice] = "Song successfully deleted" if find_song.destroy
   redirect to('/songs')
 end
 
@@ -111,5 +124,24 @@ helpers do
 
   def set_title
     @title ||= "Songs By Sinatra"
+  end
+
+  def send_message
+    Pony.mail(
+        :from => params[:name] + "<" + params[:email] + ">",
+        :to => 'account@gmail.com',
+        :subject => params[:name] + " has contacted you",
+        :body => params[:message],
+        :port => '587',
+        :via => :smtp,
+        :via_options => {
+            :address => 'smtp.gmail.com',
+            :port => '587',
+            :enable_starttls_auto => true,
+            :user_name => '******',
+            :password => '******',
+            :authentication => :plain,
+            :domain => 'localhost.localdomain'
+    })
   end
 end
