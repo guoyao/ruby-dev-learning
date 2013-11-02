@@ -3,14 +3,17 @@ require 'sass'
 require 'slim'
 require 'sinatra/flash'
 require 'pony'
+#require 'v8' # v8 is unnecessary if you have Node.js installed on your system.
+require 'coffee-script'
 require 'sinatra/reloader' if development?
 require './app/models/song'
+require './sinatra/auth'
 
 configure do
-  enable :sessions
+  #enable :sessions
   set :session_secret, 'custom session secret'
-  set :username, 'guoyao'
-  set :password, '123456'
+  #set :username, 'guoyao'
+  #set :password, '123456'
 end
 
 configure :development do
@@ -26,37 +29,36 @@ end
 #get('/main.css') { scss :main }
 get('**/main.css') { scss :main }
 
+get('/javascripts/application.js') { coffee :application }
+
 get '/' do
-  halt(401, 'Not Authorized') unless session[:admin]
   @title = 'index'
   slim :index
 end
 
-get '/login' do
-  slim :login
-end
-
-post '/login' do
-  if params[:username] == settings.username && params[:password] == settings.password
-    session[:admin] = true
-    redirect to('/songs')
-  else
-    slim :login
-  end
-end
-
-get '/logout' do
-  session.clear
-  redirect to('/login')
-end
+#get '/login' do
+#  slim :login
+#end
+#
+#post '/login' do
+#  if params[:username] == settings.username && params[:password] == settings.password
+#    session[:admin] = true
+#    redirect to('/songs')
+#  else
+#    slim :login
+#  end
+#end
+#
+#get '/logout' do
+#  session.clear
+#  redirect to('/login')
+#end
 
 get '/about' do
-  halt(401, 'Not Authorized') unless session[:admin]
   slim :about
 end
 
 get '/contact' do
-  halt(401, 'Not Authorized') unless session[:admin]
   slim :contact
 end
 
@@ -72,7 +74,7 @@ get '/songs' do
 end
 
 get '/songs/new' do
-  halt(401, 'Not Authorized') unless session[:admin]
+  protected!
   @song = Song.new
   slim :new_song
 end
@@ -83,26 +85,26 @@ get '/songs/:id' do
 end
 
 post '/songs' do
-  halt(401, 'Not Authorized') unless session[:admin]
+  protected!
   flash[:notice] = "Song successfully added" if create_song
   redirect to("/songs/#{@song.id}")
 end
 
 get '/songs/:id/edit' do
-  halt(401, 'Not Authorized') unless session[:admin]
+  protected!
   @song = find_song
   slim :edit_song
 end
 
 put '/songs/:id' do
-  halt(401, 'Not Authorized') unless session[:admin]
+  protected!
   song = find_song
   flash[:notice] = "Song successfully updated" if song.update(params[:song])
   redirect to("/songs/#{song.id}")
 end
 
 delete '/songs/:id' do
-  halt(401, 'Not Authorized') unless session[:admin]
+  protected!
   flash[:notice] = "Song successfully deleted" if find_song.destroy
   redirect to('/songs')
 end

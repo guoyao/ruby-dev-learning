@@ -4,8 +4,16 @@ html lang="en"
     title== @title
     meta charset="utf-8"
     /link rel="stylesheet" href="main.css"
-    == css :main
+    == css :main, 'http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui'
+    script src="http://code.jquery.com/jquery-1.9.1.min.js"
+    script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"
+    script src="/javascripts/application.js"
   body
     section
       == styled_flash
     == yield
+    footer
+      - if authorized?
+        a href="/logout" log out
+      - else
+        a href="/login" log in
