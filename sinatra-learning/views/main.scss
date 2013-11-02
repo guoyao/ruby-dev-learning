@@ -13,3 +13,13 @@ h1.not-found {
   color: $red;
   border: 1px solid $red;
 }
+
+#like {
+  p {
+    font-weight: bold;
+    color: $red;
+  }
+  input {
+    height: 28px;
+  }
+}
