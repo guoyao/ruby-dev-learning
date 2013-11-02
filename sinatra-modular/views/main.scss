@@ -1,0 +1,25 @@
+$red: #ff0000;
+
+h1.not-found {
+  color: $red;
+}
+
+.flash {
+  width: 600px;
+  padding: 5px;
+  font-weight: bold;
+  margin: 20px;
+  background: lighten($red, 45%);
+  color: $red;
+  border: 1px solid $red;
+}
+
+#like {
+  p {
+    font-weight: bold;
+    color: $red;
+  }
+  input {
+    height: 28px;
+  }
+}
