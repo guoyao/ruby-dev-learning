@@ -1,8 +1,11 @@
 require 'slim'
 require 'pony'
 require './app/controllers/application_controller'
+require './asset_handler'
 
 class Website < ApplicationController
+  use AssetHandler
+
   def send_message
     Pony.mail(
         :from => params[:name] + "<" + params[:email] + ">",

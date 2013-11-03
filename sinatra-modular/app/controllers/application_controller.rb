@@ -36,9 +36,9 @@ class ApplicationController < Sinatra::Base
     @title ||= "Songs By Sinatra"
   end
 
-  get('/css/main.css') { scss :main }
+  #get('/css/main.css') { scss :main }
 
-  get('/js/application.js') { coffee :application }
+  #get('/js/application.js') { coffee :application }
 
   not_found do
     slim :not_found
