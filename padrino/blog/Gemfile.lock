@@ -1,9 +1,20 @@
 GEM
-  remote: http://ruby.taobao.org/
+  remote: https://rubygems.org/
   specs:
+    activemodel (3.2.15)
+      activesupport (= 3.2.15)
+      builder (~> 3.0.0)
+    activerecord (3.2.15)
+      activemodel (= 3.2.15)
+      activesupport (= 3.2.15)
+      arel (~> 3.0.2)
+      tzinfo (~> 0.3.29)
     activesupport (3.2.15)
       i18n (~> 0.6, >= 0.6.4)
       multi_json (~> 1.0)
+    arel (3.0.2)
+    bcrypt-ruby (3.0.1)
+    builder (3.0.4)
     daemons (1.1.9)
     eventmachine (1.0.0)
     http_router (0.11.0)
@@ -56,6 +67,7 @@ GEM
     slim (2.0.2)
       temple (~> 0.6.6)
       tilt (>= 1.3.3, < 2.1)
+    sqlite3 (1.3.8)
     temple (0.6.7)
     thin (1.6.0)
       daemons (>= 1.0.9)
@@ -66,15 +78,18 @@ GEM
     treetop (1.4.15)
       polyglot
       polyglot (>= 0.3.1)
+    tzinfo (0.3.38)
     url_mount (0.2.1)
       rack
 
 PLATFORMS
   ruby
-  x86-mingw32
 
 DEPENDENCIES
+  activerecord (>= 3.1)
+  bcrypt-ruby
   padrino (= 0.11.4)
   rake
   slim
+  sqlite3
   thin
