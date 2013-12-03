@@ -4,6 +4,7 @@ require 'slim'
 require 'sinatra/flash'
 require 'pony'
 #require 'v8' # v8 is unnecessary if you have Node.js installed on your system.
+require 'v8' if production?
 require 'coffee-script'
 require 'sinatra/reloader' if development?
 require './app/models/song'
@@ -20,6 +21,10 @@ configure :development do
   DataMapper.setup(:default, "sqlite3://#{Dir.pwd}/db/development.db")
   set :port, 3000
   #set(:image_folder) { "#{Dir.pwd}/images/#{rand(100)}" }
+end
+
+configure :production do
+  DataMapper.setup(:default, ENV['VCAP_SERVICES'])
 end
 
 before do
