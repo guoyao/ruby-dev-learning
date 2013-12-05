@@ -17,7 +17,6 @@ group :development do
 end
 
 group :production do
-  gem 'json'
   gem 'mysql2'
   gem 'therubyracer' # The Ruby Racer gem is unnecessary if you have Node.js installed on your system.
   gem 'dm-mysql-adapter'

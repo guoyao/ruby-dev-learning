@@ -4,7 +4,6 @@ require 'slim'
 require 'pony'
 require 'sinatra/flash'
 require 'coffee-script'
-require 'json' if production?
 require 'v8' if production? # v8 is unnecessary if you have Node.js installed on your system.
 require 'sinatra/reloader' if development?
 require './app/models/song'
