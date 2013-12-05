@@ -1,4 +1,5 @@
-source 'http://ruby.taobao.org'
+#source 'http://ruby.taobao.org'
+source 'https://rubygems.org'
 
 # Distribute your app as a gem
 # gemspec
@@ -18,7 +19,9 @@ gem 'bcrypt-ruby', :require => 'bcrypt'
 gem 'sass'
 gem 'haml'
 gem 'activerecord', '>= 3.1', :require => 'active_record'
-gem 'sqlite3'
+#gem 'sqlite3'
+gem 'sqlite3', :group => 'development'
+gem 'mysql2', :group => 'production'
 
 # Test requirements
 gem 'shoulda', :group => 'test'

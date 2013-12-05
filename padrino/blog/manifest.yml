@@ -1,0 +1,14 @@
+---
+applications:
+- name: padrino-blog-demo
+  memory: 256M
+  instances: 1
+  host: padrino-blog-demo
+  domain: cfapps.io
+  path: .
+  services:
+    padrino-blog-demo:
+      label: cleardb
+      provider: cleardb
+      version: n/a
+      plan: spark
