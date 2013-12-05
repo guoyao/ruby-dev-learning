@@ -1,18 +1,18 @@
 require 'sinatra'
 require 'sass'
 require 'slim'
-require 'sinatra/flash'
 require 'pony'
-#require 'v8' # v8 is unnecessary if you have Node.js installed on your system.
-require 'v8' if production?
+require 'sinatra/flash'
 require 'coffee-script'
+require 'json' if production?
+require 'v8' if production? # v8 is unnecessary if you have Node.js installed on your system.
 require 'sinatra/reloader' if development?
 require './app/models/song'
 require './sinatra/auth'
 
 configure do
   #enable :sessions
-  set :session_secret, 'custom session secret'
+  set :session_secret, 'fa745546dd78b60489bcb9190a8f39592c62dc5a56f4cf11f54eeb768e2eb190'
   #set :username, 'guoyao'
   #set :password, '123456'
 end
@@ -24,7 +24,8 @@ configure :development do
 end
 
 configure :production do
-  DataMapper.setup(:default, ENV['VCAP_SERVICES'])
+  /"(mysql:\/\/[^"]+)/.match(ENV['VCAP_SERVICES'])
+  DataMapper.setup(:default, $1)
 end
 
 before do
@@ -40,24 +41,6 @@ get '/' do
   @title = 'index'
   slim :index
 end
-
-#get '/login' do
-#  slim :login
-#end
-#
-#post '/login' do
-#  if params[:username] == settings.username && params[:password] == settings.password
-#    session[:admin] = true
-#    redirect to('/songs')
-#  else
-#    slim :login
-#  end
-#end
-#
-#get '/logout' do
-#  session.clear
-#  redirect to('/login')
-#end
 
 get '/about' do
   slim :about
@@ -118,7 +101,7 @@ post '/songs/:id/like' do
   @song = find_song
   @song.likes = @song.likes.next
   @song.save
-  redirect to"/songs/#{@song.id}" unless request.xhr?
+  redirect to "/songs/#{@song.id}" unless request.xhr?
   slim :like, :layout => false
 end
 
@@ -157,6 +140,6 @@ helpers do
             :password => '******',
             :authentication => :plain,
             :domain => 'localhost.localdomain'
-    })
+        })
   end
 end

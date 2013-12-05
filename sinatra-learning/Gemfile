@@ -9,10 +9,16 @@ gem 'dm-migrations'
 gem 'sinatra-flash'
 gem 'coffee-script'
 gem 'thin'
-#gem 'therubyracer' # The Ruby Racer gem is unnecessary if you have Node.js installed on your system.
-gem 'therubyracer', :group => :production
-gem 'sinatra-reloader', :group => :development
-gem 'pony', :group => :development
-gem 'pg', :group => :production
-gem 'dm-postgres-adapter', :group => :production
-gem 'dm-sqlite-adapter', :group => :development
+gem 'pony'
+
+group :development do
+  gem 'sinatra-reloader'
+  gem 'dm-sqlite-adapter'
+end
+
+group :production do
+  gem 'json'
+  gem 'mysql2'
+  gem 'therubyracer' # The Ruby Racer gem is unnecessary if you have Node.js installed on your system.
+  gem 'dm-mysql-adapter'
+end
