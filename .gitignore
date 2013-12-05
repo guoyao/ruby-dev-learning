@@ -1,7 +1,5 @@
 .bundle
 db/*.sqlite3
-log/*.log
-tmp/
 *.log
 doc/api
 doc/app
@@ -10,3 +8,11 @@ doc/app
 .idea/
 *-cache/
 *.lock
+log/**/*
+tmp/**/*
+bin/*
+vendor/gems/*
+!vendor/gems/cache/
+.sass-cache/*
+db/*.db
+.*.sw*
