@@ -13,30 +13,33 @@
 #     :socket    => '/tmp/mysql.sock'
 #   }
 #
+
+require_relative '../app/helpers/clound_helper'
+
 ActiveRecord::Base.configurations[:development] = {
   :adapter => 'sqlite3',
   :database => Padrino.root('db', 'blog_development.db')
-
 }
+
+if (VCAP_SERVICES = ENV['VCAP_SERVICES'])
+  credential = CloundHelper.get_credentials(VCAP_SERVICES)
+end
 
 #VCAP_SERVICES={"cleardb-n/a":[{"name":"padrino-blog-demo","label":"cleardb-n/a","tags":["mysql","relational"],"plan":"spark","credentials":{"jdbcUrl":"jdbc:mysql://b27aac27ca6a1b:a7b68c28@us-cdbr-east-04.cleardb.com:3306/ad_258a5698a5d433a","uri":"mysql://b27aac27ca6a1b:a7b68c28@us-cdbr-east-04.cleardb.com:3306/ad_258a5698a5d433a?reconnect=true","name":"ad_258a5698a5d433a","hostname":"us-cdbr-east-04.cleardb.com","port":"3306","username":"b27aac27ca6a1b","password":"a7b68c28"}}]}
 ActiveRecord::Base.configurations[:production] = {
-  #:adapter => 'sqlite3',
-  #:database => Padrino.root('db', 'blog_production.db')
   :adapter   => 'mysql2',
   :encoding  => 'utf8',
   :reconnect => true,
-  :database  => 'ad_258a5698a5d433a',
+  :database  => credential['name'],
   :pool      => 5,
-  :username  => 'b27aac27ca6a1b',
-  :password  => 'a7b68c28',
-  :host      => 'us-cdbr-east-04.cleardb.com'
+  :username  => credential['username'],
+  :password  => credential['password'],
+  :host      => credential['hostname']
 }
 
 ActiveRecord::Base.configurations[:test] = {
   :adapter => 'sqlite3',
   :database => Padrino.root('db', 'blog_test.db')
-
 }
 
 # Setup our logger
