@@ -21,6 +21,12 @@ ActiveRecord::Base.configurations[:development] = {
   :database => Padrino.root('db', 'blog_development.db')
 }
 
+credential = {
+    'hostname' => 'localhost',
+    'name' => 'blog_production',
+    'username' => 'root',
+    'password' => ''
+}
 if (VCAP_SERVICES = ENV['VCAP_SERVICES'])
   credential = CloundHelper.get_credentials(VCAP_SERVICES)
 end
